@@ -21,13 +21,20 @@
 
         foreach ($period as $date) 
         {        
-            $dates[] = $date->format("d");        
+            $dates[] = $date->format("d - D");        
         }
 
         for ($i = 0; $i < $endDate; ) 
         {
-            $dates[$i] = "$dates[$i] - рабочий день";
-            $i = $i + 3;
+            if(str_contains($dates[$i], 'Sat') || str_contains($dates[$i], 'Sun'))
+            {
+                ++$i;
+            } 
+            else 
+            { 
+                $dates[$i] = "$dates[$i] - рабочий день";
+                $i = $i + 3; 
+            }           
         }
 
         foreach($dates as $date) 
