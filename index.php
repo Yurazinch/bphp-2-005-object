@@ -8,7 +8,7 @@
         $months = array('январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
         $mp = explode(',', $month_period);
         if (isset($mp[0]) || isset($mp[1])) {
-            fwrite(STDERR, "Номер месяца не указан" . PHP_EOL);
+            fwrite(STDERR, "Нет данных" . PHP_EOL);
         }
         if (empty($mp[0]) || empty($mp[1])) {
             fwrite(STDERR, "Номер месяца не указан" . PHP_EOL);
@@ -24,9 +24,8 @@
             
             $dts = new DateTime("2025-$month", $dtz);
             $endDate = date('t', strtotime("2025-$month"));
-            $interval = new DateInterval('P1D'); // Интервал в 1 день
-            $period = new DatePeriod($dts, $interval, $endDate - 1);
-            $finish += $endDate;
+            $interval = new DateInterval('P1D');
+            $period = new DatePeriod($dts, $interval, $endDate - 1);            
         
             echo $months[$dts->format("m") - 1] . PHP_EOL;    
 
@@ -49,10 +48,15 @@
                 echo $date . PHP_EOL;
             }
 
-            $month += 1;
-            $last_index =  array_search('рабочий день', array_reverse($dates), true); // как найти индекс значения, содержащего подстроку?
-            echo $last_index . PHP_EOL; // эта функция не ищет - пустая строка...
-            if ($last_index > 2) {
+            $month += 1;            
+            
+            foreach(array_reverse($dates) as $key => $date) {
+                if(str_contains($date, 'рабочий день')) {
+                    $last_index = $key;
+                    break;
+                }
+            }
+            if ($last_index > 1) {
                 $i = 0;
             } else {
                 $i = 2 - $last_index;
