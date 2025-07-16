@@ -7,11 +7,9 @@
     function jobCalendar ( string $month_period ): void {
         $months = array('январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
         $mp = explode(',', $month_period);
-        if (isset($mp[0]) || isset($mp[1])) {
-            fwrite(STDERR, "Нет данных" . PHP_EOL);
-        }
         if (empty($mp[0]) || empty($mp[1])) {
             fwrite(STDERR, "Номер месяца не указан" . PHP_EOL);
+            return;
 	    }
         $month = (int)trim($mp[0]);
         $end_month = (int)trim($mp[1]);
